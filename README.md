@@ -35,5 +35,23 @@ usage: autoime [-h] [-d] [-v]
 optional arguments:
   -h, --help            show this help message and exit
   -d, --debug           Print debug messages to stderr
+  -c CONFIG, --config CONFIG
+                        load the config file:
+
+                         [Japanese]
+                         enable = <cmd>
+                         disable = <cmd>
+
   -v, --version         display version information
+```
+
+## Config 
+
+Toggle IME on/off for the specified language.
+Defaut config path: `~/.config/autoime/config` 
+
+```text
+[Japanese]
+enable = sh -c 'test -z $(pgrep wlanthy) && wlanthy'
+disable = sh -c 'test $(pgrep wlanthy) && killall wlanthy'
 ```
