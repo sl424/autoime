@@ -61,14 +61,14 @@ def parse_config(config_path, debug):
 		quit()
 
 def main():
-	parser = argparse.ArgumentParser( formatter_class=argparse.RawTextHelpFormatter )
+	parser = argparse.ArgumentParser()
 	parser.add_argument("-d",
 			"--debug",
 			action="store_true",
 			help="Print debug messages to stderr")
 	parser.add_argument("-c",
 			"--config",
-			help="load the config file: \n\n [Japanese]\n enable = <cmd>\n disable = <cmd>\n\n",
+			help="load the config file",
 			type=str,
 			default="~/.config/autoime/config")
 	parser.add_argument("-v",

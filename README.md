@@ -17,9 +17,8 @@ fork of https://github.com/nwg-piotr/autotiling.git
 
      1. Install the `python-i3ipc>=2.0.1` package (or whatever it's called in your Linux
         distribution).
-     2. Save the `main.py` file anywhere, make executable and autostart in your
-        i3/sway config file: `exec /path/to/the/script/main.py` on sway or
-        `exec_always --no-startup-id /path/to/the/script/main.py` on i3. You can give the `main.py` file another name.
+     2. make 
+        make install
 
    _NOTE:_ The current release and master branch is compatible with sway >= 1.5. 
 
@@ -30,26 +29,21 @@ fork of https://github.com/nwg-piotr/autotiling.git
 
 ```text
 $ autoime -h
-usage: autoime [-h] [-d] [-v]
+usage: autoime [-h] [-d] [-c CONFIG] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
   -d, --debug           Print debug messages to stderr
   -c CONFIG, --config CONFIG
-                        load the config file:
-
-                         [Japanese]
-                         enable = <cmd>
-                         disable = <cmd>
-
+                        load the ime config file.
   -v, --version         display version information
 ```
 
 ## Config 
 
 Toggle IME on/off for the specified language.
-Defaut config path: `~/.config/autoime/config` 
-
+Defaut config path: `~/.config/autoime/config`.
+Example:
 ```text
 [Japanese]
 enable = sh -c 'test -z $(pgrep wlanthy) && wlanthy'
