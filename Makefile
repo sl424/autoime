@@ -1,13 +1,13 @@
 VERSION=$(shell python3 -c "from configparser import ConfigParser; p = ConfigParser(); p.read('setup.cfg'); print(p['metadata']['version'])")
 
 default:
-	python3 setup.py build
+	#@echo "\"make publish\"?"
 
 install:
-	python3 setup.py install --user
+	pip3 install .
 
 upload:
-	# Make sure we're on the master branch
+	# Make sure we're on the main branch
 	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "main" ]; then exit 1; fi
 	rm -f dist/*
 	# https://stackoverflow.com/a/58756491/353337

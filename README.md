@@ -17,8 +17,7 @@ fork of https://github.com/nwg-piotr/autotiling.git
 
      1. Install the `python-i3ipc>=2.0.1` package (or whatever it's called in your Linux
         distribution).
-     2. make 
-        make install
+     2. make install
 
    _NOTE:_ The current release and master branch is compatible with sway >= 1.5. 
 
