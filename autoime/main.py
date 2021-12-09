@@ -17,7 +17,8 @@ from i3ipc import Connection, Event
 
 
 # global LANG
-LANG=[]
+IME=[] 
+LANG=''
 
 try:
 	from .__about__ import __version__
@@ -25,6 +26,7 @@ except ImportError:
 	__version__ = "unknown"
 
 def switch_ime(i3, e, debug, ime):
+	global LANG
 	try:
 		replies = i3.get_inputs()
 		for reply in replies:
@@ -32,13 +34,24 @@ def switch_ime(i3, e, debug, ime):
 				active = reply.xkb_active_layout_name
 				if debug:
 					print(active)
-				for lang in LANG:
-					if lang == active:
-						subprocess.Popen(shlex.split(ime[lang]["enable"]))
-					else:
-						subprocess.Popen(shlex.split(ime[lang]["disable"]))
-	except Exception as e:
-		print("Error: {}".format(e), file=sys.stderr)
+				if LANG != active and LANG in IME:
+					subprocess.Popen(shlex.split(ime[LANG]["disable"]))
+				elif active in IME:
+					subprocess.Popen(shlex.split(ime[active]["enable"]))
+				LANG = active
+	except Exception as error:
+		print("Error: {}".format(error), file=sys.stderr)
+		print("E: {}".format(e), file=sys.stderr)
+
+def set_default(i3):
+	global LANG
+	try:
+		replies = i3.get_inputs()
+		for reply in replies:
+			if reply.xkb_layout_names and len(reply.xkb_layout_names) > 1:
+				LANG = reply.xkb_active_layout_name
+	except Exception as error:
+		print("Error: {}".format(error), file=sys.stderr)
 
 def parse_config(config_path, debug):
 	path = os.path.expanduser(config_path)
@@ -50,9 +63,9 @@ def parse_config(config_path, debug):
 			parse_config.ime = {}
 
 			for lang in config.sections():
-				LANG.append(lang)
+				IME.append(lang)
 				parse_config.ime[lang] = dict(config.items(lang))
-				#parse_config.ime[lang]["active"] = False
+
 		if debug:
 			print(parse_config.ime)
 		return parse_config.ime
@@ -84,6 +97,10 @@ def main():
 
 	handler = partial(switch_ime, debug=args.debug, ime=ime_engines)
 	i3 = Connection()
+
+	set_default(i3)
+	print(LANG)
+
 	i3.on(Event.INPUT, handler)
 	i3.main()
 
